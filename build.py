@@ -29,8 +29,8 @@ technologies = {
         "cuda":['nvcc']
     },
     "pstl":{
-        "cpu":['gcc'], # add other compilers
-        'cuda': ['nvc++','nvc++_x86']
+        "cpu":['gcc','nvc++_x86'], # add other compilers
+        'cuda': ['nvc++']
     },
 
 
@@ -49,7 +49,7 @@ cmds ={
     "cuda_v2":{"cuda":["srun","-n","1"]},
     "cuda_v3":{"cuda":["srun","-n","1"]},
     "pstl":{"cuda":["srun","-n","1"],
-            "cpu":["srun","-n","1"]}
+            "cpu":["srun","-n","1","-c","40","--exclusive","numactl","--cpunodebind=0"]}
 }
 # with default values
 scanParameters = [
