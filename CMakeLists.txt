@@ -1,26 +1,30 @@
 cmake_minimum_required(VERSION 3.12)
-project(p2r_kokkos CXX) # C++ needed to build my project 
-#find_package(Kokkos REQUIRED) # fail if Kokkos not found
 
-add_subdirectory(kokkos)
+project(p2r) # C++ needed to build my project 
 
-#add_compile_options(-maxrregcount=92)
-add_compile_options(-maxrregcount=83)
-#add_compile_options(--lineinfo)
-#add_compile_options(-ftree-vectorizer-verbose=6)
-#add_compile_options(-fopenmp-simd)
-add_compile_options(-ffast-math)
-add_compile_options(-march=native)
-add_compile_options(-O3)
+# Define a list of valid targets
+set(VALID_TARGETS "tbb" "cuda")
 
-# build my executable from the specified source code
-#add_executable(p2r_kokkos "./src/propagate-tor-test_kokkos.cpp")
-#add_executable(p2r_kokkos "./src/propagate-tor-test_kokkos_local.cpp")
-add_executable(p2r_kokkos "./src/propagate-tor-test_kokkos_local_tvr.cpp")
-#add_executable(p2r_kokkos "./src/propagate-tor-test_kokkos_local_tempBsize_tvr.cpp")
-#add_executable(p2r_kokkos "./src/propagate-tor-test_kokkos_local_tempBsize_notvr.cpp")
-set(CMAKE_BUILD_TYPE Debug)
+# Option to choose which target to build
+set(BUILD_TARGET "tbb" CACHE STRING "Choose the target to build :${VALID_TARGETS})")
 
-# declare dependency on Kokkos, build p2r together with Kokkos, inheriting all the kokkos flags
-#target_link_libraries(p2r_kokkos PRIVATE Kokkos::kokkos)    ## standalone build
-target_link_libraries(p2r_kokkos Kokkos::kokkos)             ## JLSE build
+# Set the executable name based on the chosen target
+set(EXECUTABLE_NAME "p2r_${BUILD_TARGET}")
+
+# Set p2r options
+set(NITER "5" CACHE STRING "number of iteration for p2r")
+
+set(CUDA_ARCH "80" CACHE STRING "CUDA arch")
+
+# Validate the chosen target
+set_property(CACHE BUILD_TARGET PROPERTY STRINGS ${VALID_TARGETS})
+
+# Add source directories based on the chosen target
+if(BUILD_TARGET IN_LIST VALID_TARGETS)
+    add_subdirectory(p2r_${BUILD_TARGET})
+else()
+    message(FATAL_ERROR "Invalid value for BUILD_TARGET. Please choose one of: ${VALID_TARGETS}")
+endif()
+
+
+
