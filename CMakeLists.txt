@@ -5,9 +5,10 @@ project(p2r_kokkos CXX) # C++ needed to build my project
 add_subdirectory(kokkos)
 
 #add_compile_options(-maxrregcount=92)
+add_compile_options(-maxrregcount=83)
 #add_compile_options(--lineinfo)
-add_compile_options(-ftree-vectorizer-verbose=6)
-add_compile_options(-fopenmp-simd)
+#add_compile_options(-ftree-vectorizer-verbose=6)
+#add_compile_options(-fopenmp-simd)
 add_compile_options(-ffast-math)
 add_compile_options(-march=native)
 add_compile_options(-O3)
