@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22)
 project(p2r) # C++ needed to build my project 
 
 # Define a list of valid targets
-set(VALID_TARGETS "tbb" "cuda")
+set(VALID_TARGETS "tbb" "cuda" "alpaka" "hip" "kokkos" "stdpar" "sycl")
 
 # Option to choose which target to build
 set(BUILD_TARGET "tbb" CACHE STRING "Choose the target to build :${VALID_TARGETS})")

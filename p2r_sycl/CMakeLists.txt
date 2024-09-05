@@ -1,18 +1,17 @@
-# Enable CUDA language
-enable_language(CUDA)
+# Set the project name for target
+project(p2r_sycl)
 
-# Set the project name for target2
-project(p2r_cuda)
+set(CUDA_PATH "" CACHE STRING "path to CUDA")
+set(SYCL_PATH "" CACHE STRING "path to CLANG")
 
-# Set the C++ standard to C++17
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# Set the compiler to nvc++
+set(CLANG ${SYCL_PATH}clang++)
+set(CMAKE_C_COMPILER ${CLANG}) 
+set(CMAKE_CXX_COMPILER ${CLANG})
 
 set(TARGET_SOURCES
-    propagate-tor-test_cuda_uvm.cu 
+   propagate-tor-test_sycl.cpp
 )
-set(CUDA_ARCH "80" CACHE STRING "CUDA architecture version")
-set(CMAKE_CUDA_ARCHITECTURES ${CUDA_ARCH})
 
 # Include directories
 include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -20,13 +19,11 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 # Add the executable for target2
 add_executable(${EXECUTABLE_NAME} ${TARGET_SOURCES})
 
-# Specify the CUDA compiler options
-target_compile_options(${EXECUTABLE_NAME} PRIVATE
-    $<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>
-    $<$<COMPILE_LANGUAGE:CUDA>:--extended-lambda>
-    $<$<COMPILE_LANGUAGE:CUDA>:-O3>
-    $<$<COMPILE_LANGUAGE:CUDA>:--default-stream per-thread>
-)
+#set compiler options for CUDA
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --cuda-path=${CUDA_PATH}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl-targets=nvptx64-nvidia-cuda")
 
 # Pass the NITER value to the source code
 target_compile_definitions(${EXECUTABLE_NAME} PRIVATE NITER=${NITER})

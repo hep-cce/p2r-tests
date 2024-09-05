@@ -8,8 +8,11 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Project.
 
 set(_TARGET_NAME p2r_alpaka)
+set(TARGET_SOURCES src/propagate-tor-test_alpaka_local.cpp)
+#    src/propagate-tor-test_alpaka_local_sycl.cpp)
+#    src/propagate-tor-test_alpaka.cpp)
 
-project(${_TARGET_NAME})
+project(p2r_alpaka)
 
 #-------------------------------------------------------------------------------
 # Find alpaka.
@@ -24,6 +27,12 @@ set(alpaka_CXX_STANDARD 17)
 # Add executable.
 add_compile_definitions(EXCLUDE_H2D_TRANSFER=1)
 add_compile_definitions(EXCLUDE_D2H_TRANSFER=1)
+# Pass the NITER value to the source code
+add_compile_definitions(${EXECUTABLE_NAME} PRIVATE NITER=${NITER})
+add_compile_definitions(${EXECUTABLE_NAME} PRIVATE bsize=${bsize})
+add_compile_definitions(${EXECUTABLE_NAME} PRIVATE nevts=${nevts})
+add_compile_definitions(${EXECUTABLE_NAME} PRIVATE ntrks=${ntrks})
+
 if(alpaka_ACC_GPU_CUDA_ENABLE)
     #set(CMAKE_CUDA_ARCHITECTURES 70)
     #add_compile_definitions(num_streams=1)
@@ -47,10 +56,16 @@ else()
 endif()
 
 alpaka_add_executable(
-    ${_TARGET_NAME}
-    src/propagate-tor-test_alpaka_local.cpp)
-#    src/propagate-tor-test_alpaka_local_sycl.cpp)
-#    src/propagate-tor-test_alpaka.cpp)
+    ${EXECUTABLE_NAME}
+    ${TARGET_SOURCES}
+)
+
+
+message(TARGET_SOURCES="${TARGET_SOURCES}")
+message(EXECUTABLE_NAME="${EXECUTABLE_NAME}")
+message(BUILD_TARGET="${BUILD_TARGET}")
+message(NITER="${NITER}")
+
 
 target_link_libraries(
     ${_TARGET_NAME}
