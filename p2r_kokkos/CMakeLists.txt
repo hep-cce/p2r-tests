@@ -42,6 +42,9 @@ set(CMAKE_BUILD_TYPE Debug)
 
 target_link_libraries(p2r_kokkos Kokkos::kokkos)             ## JLSE build
 
+install(TARGETS p2r_kokkos
+    RUNTIME DESTINATION bin
+)
 # build my executable from the specified source code
 # Add the executable for target2
 #add_executable(p2r_kokkos "./src/propagate-tor-test_kokkos_local_tvr.cpp")

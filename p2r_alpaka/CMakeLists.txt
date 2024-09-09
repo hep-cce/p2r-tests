@@ -72,3 +72,6 @@ target_link_libraries(
     PUBLIC alpaka::alpaka
 )
 
+install(TARGETS p2r_alpaka
+    RUNTIME DESTINATION bin
+)

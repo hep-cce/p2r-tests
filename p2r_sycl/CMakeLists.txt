@@ -35,3 +35,7 @@ message(TARGET_SOURCES="${TARGET_SOURCES}")
 message(EXECUTABLE_NAME="${EXECUTABLE_NAME}")
 message(BUILD_TARGET="${BUILD_TARGET}")
 message(NITER="${NITER}")
+
+install(TARGETS p2r_sycl
+    RUNTIME DESTINATION bin
+)
