@@ -17,7 +17,7 @@ project(p2r_alpaka)
 #-------------------------------------------------------------------------------
 # Find alpaka.
 
-find_package(alpaka REQUIRED)
+find_package(alpaka REQUIRED PATHS ${CMAKE_SOURCE_DIR}/alpaka)
 
 #-------------------------------------------------------------------------------
 # Set common var
