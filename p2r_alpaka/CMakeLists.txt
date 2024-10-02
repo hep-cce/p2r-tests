@@ -17,7 +17,7 @@ project(p2r_alpaka)
 #-------------------------------------------------------------------------------
 # Find alpaka.
 
-find_package(alpaka REQUIRED PATHS ${CMAKE_SOURCE_DIR}/alpaka/cmake)
+find_package(alpaka REQUIRED)
 
 #-------------------------------------------------------------------------------
 # Set common var
@@ -34,6 +34,8 @@ add_compile_definitions(${EXECUTABLE_NAME} PRIVATE nevts=${nevts})
 add_compile_definitions(${EXECUTABLE_NAME} PRIVATE ntrks=${ntrks})
 
 if(alpaka_ACC_GPU_CUDA_ENABLE)
+    add_compile_definitions(${EXECUTABLE_NAME} PRIVATE elementsperthread=1)
+    add_compile_definitions(${EXECUTABLE_NAME} PRIVATE threadsperblock=${bsize})
     #set(CMAKE_CUDA_ARCHITECTURES 70)
     #add_compile_definitions(num_streams=1)
     #set(CMAKE_BUILD_TYPE Debug)
