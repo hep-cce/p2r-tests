@@ -20,10 +20,20 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 add_executable(${EXECUTABLE_NAME} ${TARGET_SOURCES})
 
 #set compiler options for CUDA
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --cuda-path=${CUDA_PATH}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl-targets=nvptx64-nvidia-cuda")
+if(BACKEND STREQUAL "nvidia")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --cuda-path=${CUDA_PATH}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl-targets=nvptx64-nvidia-cuda")
+    target_compile_definitions(${EXECUTABLE_NAME} PRIVATE USEGPU)
+elseif(BACKEND STREQUAL "amd")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl-targets=amdgcn-amd-amdhsa")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Xsycl-target-backend")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --offload-arch=${HIP_ARCH}")
+    target_compile_definitions(${EXECUTABLE_NAME} PRIVATE USEGPU)
+endif()
 
 # Pass the NITER value to the source code
 target_compile_definitions(${EXECUTABLE_NAME} PRIVATE NITER=${NITER})
@@ -35,6 +45,7 @@ message(TARGET_SOURCES="${TARGET_SOURCES}")
 message(EXECUTABLE_NAME="${EXECUTABLE_NAME}")
 message(BUILD_TARGET="${BUILD_TARGET}")
 message(NITER="${NITER}")
+message(BACKEND="${BACKEND}")
 
 install(TARGETS p2r_sycl
     RUNTIME DESTINATION bin

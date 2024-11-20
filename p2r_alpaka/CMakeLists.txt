@@ -45,6 +45,8 @@ if(alpaka_ACC_GPU_CUDA_ENABLE)
     add_compile_options(--use_fast_math)
 ##HIP flags
 elseif (alpaka_ACC_GPU_HIP_ENABLE)
+    add_compile_definitions(${EXECUTABLE_NAME} PRIVATE elementsperthread=1)
+    add_compile_definitions(${EXECUTABLE_NAME} PRIVATE threadsperblock=${bsize})
     add_compile_options(-std=c++17)
     add_compile_options(-ffast-math)
     add_compile_options(-O3)
