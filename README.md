@@ -1,5 +1,11 @@
 # p2r-tests
 
+## Installation from spack 
+
+### Getting spack
+### 
+
+
 ## Build instructions on JLSE
 
 ### Kokkos versions with CUDA backend:
