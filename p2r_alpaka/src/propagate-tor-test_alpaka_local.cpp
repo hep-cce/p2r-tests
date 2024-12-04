@@ -932,9 +932,12 @@ int main (int argc, char* argv[]) {
    std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
 
    // Select the first device available on a system, for the chosen accelerator
-   auto const device = alpaka::getDevByIdx<Acc>(0u);
-   using DevHost = alpaka::DevCpu;
-   auto const devHost = alpaka::getDevByIdx<DevHost>(0u);
+   auto const platform = alpaka::Platform<Acc>{}; 
+   auto const device = alpaka::getDevByIdx(platform, 0);
+   //using DevHost = alpaka::DevCpu;
+   //auto const devHost = alpaka::getDevByIdx<DevHost>(0u);
+   auto const platformHost = alpaka::PlatformCpu{};
+   auto const devHost = alpaka::getDevByIdx(platformHost, 0);
 
    // prepare pointers
    Idx const nMPHIT(nevts*nb*nlayer);   
