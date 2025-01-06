@@ -1,13 +1,7 @@
 # Set the project name for target
 project(p2r_sycl)
 
-set(CUDA_PATH "" CACHE STRING "path to CUDA")
 set(SYCL_PATH "" CACHE STRING "path to CLANG")
-
-# Set the compiler to nvc++
-set(CLANG ${SYCL_PATH}clang++)
-set(CMAKE_C_COMPILER ${CLANG}) 
-set(CMAKE_CXX_COMPILER ${CLANG})
 
 set(TARGET_SOURCES
    propagate-tor-test_sycl.cpp
@@ -21,18 +15,39 @@ add_executable(${EXECUTABLE_NAME} ${TARGET_SOURCES})
 
 #set compiler options for CUDA
 if(BACKEND STREQUAL "nvidia")
+    set(CUDA_PATH "" CACHE STRING "path to CUDA")
+    # Set the compiler to nvc++
+    set(CLANG ${SYCL_PATH}clang++)
+    set(CMAKE_C_COMPILER ${CLANG}) 
+    set(CMAKE_CXX_COMPILER ${CLANG})
+
+    # Set compiler flags
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --cuda-path=${CUDA_PATH}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl-targets=nvptx64-nvidia-cuda")
     target_compile_definitions(${EXECUTABLE_NAME} PRIVATE USEGPU)
 elseif(BACKEND STREQUAL "amd")
+    # Set the compiler to clang++
+    set(CLANG ${SYCL_PATH}clang++)
+    set(CMAKE_C_COMPILER ${CLANG}) 
+    set(CMAKE_CXX_COMPILER ${CLANG})
+
+    # Set compiler flags
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl-targets=amdgcn-amd-amdhsa")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Xsycl-target-backend")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --offload-arch=${HIP_ARCH}")
     target_compile_definitions(${EXECUTABLE_NAME} PRIVATE USEGPU)
+elseif(BACKEND STREQUAL "cpu")
+    # Set the compiler to icpx
+    set(CMAKE_C_COMPILER icpx) 
+    set(CMAKE_CXX_COMPILER icpx)
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsycl")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 endif()
 
 # Pass the NITER value to the source code
