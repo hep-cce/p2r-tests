@@ -42,7 +42,7 @@ cd build
 
 
 ## TBB CPU - OK!
-#cmake ../ -DBUILD_TARGET=tbb -DNITER=10 -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc
+cmake ../ -DBUILD_TARGET=tbb -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -Dnthreads=96
 
 ## Kokkos CPU - OK! 
 #cmake ../ -DBUILD_TARGET=kokkos -DKokkos_ENABLE_OPENMP=ON -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=g++ -Dkokkos-threads=32 

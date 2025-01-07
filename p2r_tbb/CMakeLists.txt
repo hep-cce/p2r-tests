@@ -23,6 +23,7 @@ add_compile_definitions(${EXECUTABLE_NAME} PRIVATE NITER=${NITER})
 add_compile_definitions(${EXECUTABLE_NAME} PRIVATE bsize=${bsize})
 add_compile_definitions(${EXECUTABLE_NAME} PRIVATE nevts=${nevts})
 add_compile_definitions(${EXECUTABLE_NAME} PRIVATE ntrks=${ntrks})
+add_compile_definitions(${EXECUTABLE_NAME} PRIVATE nthreads=${nthreads})
 
 message(TARGET_SOURCES="${TARGET_SOURCES}")
 message(EXECUTABLE_NAME="${EXECUTABLE_NAME}")

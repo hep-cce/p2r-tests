@@ -23,6 +23,7 @@ set(NITER "5" CACHE STRING "number of iteration for p2r")
 set(bsize "32" CACHE STRING "Size of AOSOA for p2r")
 set(nevts "100" CACHE STRING "Number of events")
 set(ntrks "8192" CACHE STRING "Number of tracks")
+set(nthreads "96" CACHE STRING "Number of threads used for TBB CPU implementation")
 
 # Validate the chosen target
 set_property(CACHE BUILD_TARGET PROPERTY STRINGS ${VALID_TARGETS})
