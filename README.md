@@ -7,10 +7,12 @@
 - [Installation with CMAKE](#installation-with-CMAKE)
   - [p2r run parameters](#p2r-run-parameters)
   - [NVIDIA backends](#NVIDIA-backends)
-  - [HIP(AMD) backends](#HIP(AMD)-backends)
+  - [HIP(AMD) backends](#HIP-backends)
   - [CPU backends](CPU-backends) 
 - [Installation with spack](#installation-with-spack)
-- [Citing p2r](#Citing p2r)
+  - [External packages](External-packages) 
+  - [Installation commands](Installation-commands) 
+- [Citing p2r](#Citing-p2r)
 
 ## Installation with CMAKE
 ```
@@ -24,11 +26,11 @@ cd ../
 ### p2r run parameters
 You can set the following run parameters for each of the implementations:
 
- - `NITER` "5"  "number of iteration for p2r
- - `bsize` "32"  "Size of AOSOA for p2r
- - `nevts` "100"  "Number of events
- - `ntrks` "8192" "Number of tracks
- - `nthreads` "96"  "Number of threads used for TBB CPU implementation
+ - `NITER` "5"  Number of iteration for p2r
+ - `bsize` "32"  Size of AOSOA for p2r
+ - `nevts` "100"  Number of events
+ - `ntrks` "8192" Number of tracks
+ - `nthreads` "96"  Number of threads used for TBB CPU implementation only
 
 Notes: 
  - `ntrks*nevts` needs to be divisible by `bsize`.
@@ -61,7 +63,9 @@ Notes:
             -DCUDA_PATH=path_to_cuda\
             -DSYCL_PATH=path_to_sycl
    ```
-### HIP(AMD) backends
+### HIP backends
+
+   Current HIP backends are tested for AMD hardwares only. 
 
  - HIP Implementation 
    ```
@@ -73,7 +77,9 @@ Notes:
               -DKokkos_ENABLE_HIP=ON -DKokkos_ARCH_VEGA908=On -DCMAKE_CXX_STANDARD=17
    ``` 
  - Alpaka Implementation
+
    Note: Builds OK for Alpaka v1.2.0 and rocm/5.6.1, but have runtime problem on MI-100
+
    ```
     cmake ../ -DBUILD_TARGET=alpaka -DCMAKE_BUILD_TYPE=Release -Dalpaka_ROOT=path_to_alpaka/\
               -DCMAKE_CXX_COMPILER=hipcc \
@@ -105,9 +111,76 @@ cmake ../ -DBUILD_TARGET=sycl -DBACKEND=cpu
 ```
 ## Installation from spack 
 
-### Getting spack
+ - Getting spack
+
+```
+git clone -c feature.manyFiles=true --depth=2 https://github.com/spack/spack.git
+
+. spack/share/spack/setup-env.sh  #For bash
+```
+
+   For details, see the official [spack documentation](https://spack.readthedocs.io/en/latest/getting_started.html)
+    
 ### External packages
+
+ - To avoid installing full stack of software dependencies, you may specify the location of the already-installed packages in your system (e.g. on an HPC machine). 
+   These are called external packages.
+
+ - The list of external packages are kept in this yaml file: `.spack/packages.yaml`
+ 
+ - Examples of external packages used by `p2r`
+```
+packages:
+  cuda:
+    buildable: false
+    externals:
+    - spec: cuda@11.6.2
+      prefix: /soft/compilers/cuda/cuda-11.6.2
+  nvhpc:
+    buildable: false
+    externals:
+    - spec: nvhpc@22.7
+      prefix: /soft/compilers/nvhpc/Linux_x86_64/22.7
+  hip:
+    buildable: false
+    externals:
+    - spec: hip@5.6.1
+      prefix: /soft/compilers/rocm/rocm-5.6.1
+  intel-tbb:
+    buildable: false
+    externals:
+    - spec: intel-tbb@2021.12.0
+      prefix: /soft/compilers/oneapi/2024.04.15.001/oneapi/tbb/2021.12
+```
+
 ### Installation commands
+
+ - With `spack`, the CMAKE options for `p2r` are pre-set to correct values for different implementations and backends. 
+ - Installation commands are more uniform.
+ - `kokkos` implementation is installed as a sub-module, please use `p2r-tests@kokkos` for all `p2r-kokkos` implementation
+ - Note: Need to specify `gcc` versions for kokkos implementation by adding `%gcc@9.2.0`
+ - Note: Need to specify compiler for `stdpar` by adding `%nvhpc@22.7`
+ 
+#### NVIDIA backends
+
+Example command:
+
+```
+spack install p2r-tests@[main|kokkos] impl=[cuda|kokkos|alpaka|stdpar|sycl] backend=nvidia cuda-arch=80
+```
+
+### AMD backends
+
+Example command:
+
+```
+spack install p2r-tests@[main|kokkos] impl=[hip|kokkos|alpaka] backend=amd hip-arch=gfx908
+```
+
+### CPU backends:
+```
+spack install p2r-tests@[main|kokkos] impl=[tbb|kokkos|alpaka|stdpar|sycl] backend=cpu 
+```
 
 ## Citing p2r
 
