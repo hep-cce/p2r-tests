@@ -2,6 +2,16 @@
 
  `p2r` is a test code taken from a HEP tracking algorithm to compare the performance and experience of implementing different portability solutions.
 
+## Table of Contents
+
+- [Installation with CMAKE](#installation-with-CMAKE)
+  - [p2r run parameters](#p2r-run-parameters)
+  - [NVIDIA backends](#NVIDIA-backends)
+  - [HIP(AMD) backends](#HIP(AMD)-backends)
+  - [CPU backends](CPU-backends) 
+- [Installation with spack](#installation-with-spack)
+- [Citing p2r](#Citing p2r)
+
 ## Installation with CMAKE
 ```
 git clone https://github.com/kakwok/p2r-tests.git
