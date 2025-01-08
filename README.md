@@ -8,10 +8,10 @@
   - [p2r run parameters](#p2r-run-parameters)
   - [NVIDIA backends](#NVIDIA-backends)
   - [HIP(AMD) backends](#HIP-backends)
-  - [CPU backends](CPU-backends) 
+  - [CPU backends](#CPU-backends) 
 - [Installation with spack](#installation-with-spack)
-  - [External packages](External-packages) 
-  - [Installation commands](Installation-commands) 
+  - [External packages](#External-packages) 
+  - [Installation commands](#Installation-commands) 
 - [Citing p2r](#Citing-p2r)
 
 ## Installation with CMAKE
