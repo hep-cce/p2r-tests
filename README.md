@@ -91,11 +91,11 @@ Notes:
 ```
 cmake ../ -DBUILD_TARGET=tbb -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -Dnthreads=96
 ```
- - Kokkos implementation
+ - Kokkos implementation (via OpenMP)
 ```
  cmake ../ -DBUILD_TARGET=kokkos -DKokkos_ENABLE_OPENMP=ON -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=g++ -Dkokkos-threads=32
 ```
- - Alpaka Implementation
+ - Alpaka Implementation (via TBB)
 ```
  cmake ../ -DBUILD_TARGET=alpaka -DCMAKE_BUILD_TYPE=Release -Dalpaka_ROOT=path_to_alpaka\
        -DCMAKE_CXX_COMPILER=g++ -Dalpaka_CXX_STANDARD=17\
@@ -157,13 +157,13 @@ packages:
 
  - With `spack`, the CMAKE options for `p2r` are pre-set to correct values for different implementations and backends. 
  - Installation commands are more uniform.
- - `kokkos` implementation is installed as a sub-module, please use `p2r-tests@kokkos` for all `p2r-kokkos` implementation
+ - `kokkos` implementation is installed as a sub-module, please use `p2r-tests@kokkos` for all `p2r-kokkos` implementation, otherwise, use `p2r-tests@main`.
  - Note: Need to specify `gcc` versions for kokkos implementation by adding `%gcc@9.2.0`
  - Note: Need to specify compiler for `stdpar` by adding `%nvhpc@22.7`
  
 #### NVIDIA backends
 
-Example command:
+Use `cuda-arch` to specify the architecture. Example command
 
 ```
 spack install p2r-tests@[main|kokkos] impl=[cuda|kokkos|alpaka|stdpar|sycl] backend=nvidia cuda-arch=80
@@ -171,7 +171,7 @@ spack install p2r-tests@[main|kokkos] impl=[cuda|kokkos|alpaka|stdpar|sycl] back
 
 ### AMD backends
 
-Example command:
+Use `hip-arch` to specify the architecture. Example command:
 
 ```
 spack install p2r-tests@[main|kokkos] impl=[hip|kokkos|alpaka] backend=amd hip-arch=gfx908
