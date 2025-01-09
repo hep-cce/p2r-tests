@@ -111,11 +111,14 @@ cmake ../ -DBUILD_TARGET=sycl -DBACKEND=cpu
 ```
 ## Installation from spack 
 
- - Getting spack
+ - Getting spack: (from a private fork before p2r is integrated in official spack) 
 
 ```
-git clone -c feature.manyFiles=true --depth=2 https://github.com/spack/spack.git
+git clone -c feature.manyFiles=true --depth=2 https://github.com/kakwok/spack.git 
+```
 
+ - Set-up the environment:
+```
 . spack/share/spack/setup-env.sh  #For bash
 ```
 
@@ -126,7 +129,7 @@ git clone -c feature.manyFiles=true --depth=2 https://github.com/spack/spack.git
  - To avoid installing full stack of software dependencies, you may specify the location of the already-installed packages in your system (e.g. on an HPC machine). 
    These are called external packages.
 
- - The list of external packages are kept in this yaml file: `.spack/packages.yaml`
+ - The list of external packages are kept in this yaml file: `~/.spack/packages.yaml`
  
  - Examples of external packages used by `p2r`
 ```
@@ -152,7 +155,36 @@ packages:
     - spec: intel-tbb@2021.12.0
       prefix: /soft/compilers/oneapi/2024.04.15.001/oneapi/tbb/2021.12
 ```
-
+ - The corresponding compilers are specified in the yaml file : `~/.spack/linux/compilers.yaml`
+```
+compilers:
+- compiler:
+    spec: gcc@=9.2.0
+    paths:
+      cc: /soft/compilers/gcc/9.2.0/linux-rhel7-x86_64/bin/gcc
+      cxx: /soft/compilers/gcc/9.2.0/linux-rhel7-x86_64/bin/g++
+      f77: /soft/compilers/gcc/9.2.0/linux-rhel7-x86_64/bin/gfortran
+      fc: /soft/compilers/gcc/9.2.0/linux-rhel7-x86_64/bin/gfortran
+    flags: {}
+    operating_system: opensuse15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: nvhpc@=22.7
+    paths:
+      cc: /soft/compilers/nvhpc/Linux_x86_64/22.7/compilers/bin/nvc
+      cxx: /soft/compilers/nvhpc/Linux_x86_64/22.7/compilers/bin/nvc++
+      f77: /soft/compilers/nvhpc/Linux_x86_64/22.7/compilers/bin/nvfortran
+      fc:  /soft/compilers/nvhpc/Linux_x86_64/22.7/compilers/bin/nvfortran
+    flags: {}
+    operating_system: opensuse15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+```
 ### Installation commands
 
  - With `spack`, the CMAKE options for `p2r` are pre-set to correct values for different implementations and backends. 
