@@ -201,6 +201,11 @@ Use `cuda-arch` to specify the architecture. Example command
 spack install p2r-tests@[main|kokkos] impl=[cuda|kokkos|alpaka|stdpar|sycl] backend=nvidia cuda-arch=80
 ```
 
+To install with a specific version of cuda e.g. `12.0.0`(must be at least 11.6.2):
+```
+p2r-tests@main impl=cuda backend=nvidia ^cuda@12.0.0
+```
+
 ### AMD backends
 
 Use `hip-arch` to specify the architecture. Example command:
