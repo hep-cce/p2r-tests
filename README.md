@@ -16,7 +16,7 @@
 
 ## Installation with CMAKE
 ```
-git clone https://github.com/kakwok/p2r-tests.git
+git clone git@github.com:hep-cce/p2r-tests.git
 cd p2r-tests
 mkdir build && cd build
 cmake ../ -DBUILD_TARGET=[tbb|cuda|alpaka|hip|kokkos|stdpar|sycl] -DBACKEND=[nvidia|amd|cpu] ## See below for examples in each combination
